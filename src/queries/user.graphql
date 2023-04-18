@@ -1,0 +1,26 @@
+mutation registerAccount(
+  $username: String!
+  $email: String!
+  $password: String!
+){
+  registerUser(
+    username: $username
+    email: $email
+    password: $password
+  ){
+    username
+  }
+}
+
+mutation login($username: String!, $password: String!){
+  login(
+    username: $username
+    password: $password
+  ){
+    access_token
+  }
+}
+
+# mutation logout {
+#   logout
+# }

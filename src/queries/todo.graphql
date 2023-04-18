@@ -1,0 +1,12 @@
+query todos {
+  todos {
+    createdAt
+    deletedAt
+    description
+    due
+    status
+    title
+    todoId
+    updatedAt
+  }
+}
