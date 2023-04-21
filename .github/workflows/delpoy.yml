@@ -32,6 +32,6 @@ jobs:
           username: ${{secrets.SSH_USERNAME}}
           port: ${{secrets.SSH_PORT}}
           script: |
-            cd user-client
+            git init
             git pull origin main
 
