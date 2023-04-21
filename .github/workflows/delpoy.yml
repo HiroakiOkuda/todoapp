@@ -32,6 +32,6 @@ jobs:
           username: ${{secrets.SSH_USERNAME}}
           port: ${{secrets.SSH_PORT}}
           script: |
-            cd todoapp
+            cd user-client
             git pull origin main
 
