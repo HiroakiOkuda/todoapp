@@ -7,5 +7,9 @@ mkdir -p ~/.ssh
 echo "$CONOHA_VPS_SSH_KEY" > ~/.ssh/deploy_key
 chmod 600 ~/.ssh/deploy_key
 
-# SSHでVPSに接続してコードをアップロード
-ssh -oStrictHostKeyChecking=no -i ~/.ssh/deploy_key $CONOHA_VPS_USER@$CONOHA_VPS_HOST "cd $CONOHA_VPS_DIR && docker-compose pull && docker-compose down && docker-compose up -d"
+# ローカルでDockerイメージをビルドしてリモートホストへ転送
+docker build -t todoapp-client .
+docker save todoapp-client | gzip | ssh -i ~/.ssh/deploy_key $CONOHA_VPS_USER@$CONOHA_VPS_HOST 'gunzip | docker load'
+
+# SSHで接続して、Dockerコンテナを実行する
+ssh -i ~/.ssh/deploy_key $CONOHA_VPS_USER@$CONOHA_VPS_HOST "docker rm -f todoapp-client || true && docker run -d --name=todoapp-client -p $APP_PORT:80 todoapp-client"
