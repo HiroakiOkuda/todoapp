@@ -38,6 +38,5 @@ jobs:
           CONOHA_VPS_USER: ${{ secrets.SSH_USERNAME }}
           CONOHA_VPS_HOST: ${{ secrets.SSH_HOST }}
           CONOHA_VPS_DIR: ${{ secrets.SSH_DIR }}
-      
        run: |
           ssh -o StrictHostKeyChecking=no -o ProxyCommand="ssh -W %h:%p -i ssh_key user@bastion" user@host "chmod +x deploy.sh && ./deploy.sh"
