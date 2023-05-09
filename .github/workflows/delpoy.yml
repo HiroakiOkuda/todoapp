@@ -33,12 +33,10 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v2
       - name: Deploy Conoha VPS
-        uses: appleboy/ssh-action@master
-        with:
+        env:
           CONOHA_VPS_SSH_KEY: ${{ secrets.SSH_SECRET_KEY }}
           CONOHA_VPS_SSH_KNOWN_HOSTS: ${{secrets.SSH_KNOWN_HOSTS}}
           CONOHA_VPS_USER: ${{ secrets.SSH_USERNAME }}
           CONOHA_VPS_HOST: ${{ secrets.SSH_HOST }}
           CONOHA_VPS_DIR: ${{ secrets.SSH_DIR }}
-      - name: Run Shell Script
         run: sh .github/workflows/deploy.sh
