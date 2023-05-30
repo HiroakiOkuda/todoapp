@@ -40,4 +40,4 @@ jobs:
           CONOHA_VPS_USER: ${{secrets.SSH_USERNAME}}
           CONOHA_VPS_PORT: ${{secrets.SSH_PORT}}
           CONOHA_VPS_DIR: ${{ secrets.SSH_DIR }}
-        run: sh .github/workflows/deploy.sh
+    run: sh .github/workflows/deploy.sh
