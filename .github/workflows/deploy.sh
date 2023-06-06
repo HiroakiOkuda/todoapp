@@ -2,13 +2,6 @@ bash
 #!/bin/bash
 set -e
 
-# 変数のdebug
-
-echo "key: $KEY"
-echo "username: $USERNAME"
-echo "host: $HOST"
-echo "port: $PORT"
-
 # Conoha VPSへSSH接続するキーを作成
 mkdir -p ~/.ssh
 echo "$KEY" > ~/.ssh/deploy_key
@@ -19,4 +12,5 @@ docker build -t todoapp-client .
 docker save todoapp-client | gzip | ssh -i ~/.ssh/deploy_key $USERNAME@$HOST 'gunzip | docker load'
 
 # SSHで接続して、Dockerコンテナを実行する
-ssh -i ~/.ssh/deploy_key $USERNAME@$HOST "docker rm -f todoapp-client || true && docker run -d --name=todoapp-client -p $PORT:80 todoapp-client"
+ssh-keyscan $HOST >> ~/.ssh/known_hosts
+ssh -T -i ~/.ssh/deploy_key $USERNAME@$HOST 'docker rm -f todoapp-client || true && docker run -d --name=todoapp-client -p $port:80 todoapp-client'
