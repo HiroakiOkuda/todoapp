@@ -2,6 +2,13 @@ bash
 #!/bin/bash
 set -e
 
+# 変数のdebug
+
+echo "key: $key"
+echo "username: $username"
+echo "host: $host"
+echo "port: $port"
+
 # Conoha VPSへSSH接続するキーを作成
 mkdir -p ~/.ssh
 echo "$key" > ~/.ssh/deploy_key
