@@ -39,7 +39,7 @@ jobs:
           host: ${{secrets.SSH_HOST}}
           username: ${{secrets.SSH_USERNAME}}
           port: ${{secrets.SSH_PORT}}
-          script: 
+          script: |
             mkdir -p ~/.ssh
             echo ${{ secrets.SSH_PRIVATE_KEY }} > ~/.ssh/deploy_key
             chmod 600 ~/.ssh/deploy_key
