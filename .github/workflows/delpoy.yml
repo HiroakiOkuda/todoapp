@@ -39,10 +39,11 @@ jobs:
           host: ${{secrets.SSH_HOST}}
           username: ${{secrets.SSH_USERNAME}}
           port: ${{secrets.SSH_PORT}}
-      - name: run scripts
-        env:
-          KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          HOST: ${{secrets.SSH_HOST}}
-          USERNAME: ${{secrets.SSH_USERNAME}}
-          PORT: ${{secrets.SSH_PORT}}
-        run: sh .github/workflows/deploy.sh
+          script: 
+            mkdir -p ~/.ssh
+            echo ${{ secrets.SSH_PRIVATE_KEY }} > ~/.ssh/deploy_key
+            chmod 600 ~/.ssh/deploy_key
+            docker build -t todoapp-client .
+            docker save todoapp-client | gzip | ssh -i ~/.ssh/deploy_key ${{secrets.SSH_USERNAME}}@${{secrets.SSH_HOST}} 'gunzip | docker load'
+            ssh-keyscan ${{secrets.SSH_HOST}} >> ~/.ssh/known_hosts
+            ssh -T -i ~/.ssh/deploy_key ${{secrets.SSH_USERNAME}}@${{secrets.SSH_HOST}} 'docker rm -f todoapp-client || true && docker run -d --name=todoapp-client -p $port:80 todoapp-client'
