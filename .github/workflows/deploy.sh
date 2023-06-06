@@ -2,15 +2,9 @@ bash
 #!/bin/bash
 set -e
 
-# 変数をdebug
-echo $KEY
-echo $USERNAME
-echo $HOST
-
 # Conoha VPSへSSH接続するキーを作成
 mkdir -p ~/.ssh
-echo "$KEY" >> ~/.ssh/deploy_key
-chmod 600 ~/.ssh/deploy_key
+echo "$KEY" > ~/.ssh/deploy_key && chmod 600 ~/.ssh/deploy_key
 
 # ローカルでDockerイメージをビルドしてリモートホストへ転送
 docker build -t todoapp-client .
