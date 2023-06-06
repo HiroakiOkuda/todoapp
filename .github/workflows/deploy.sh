@@ -12,7 +12,5 @@ docker build -t todoapp-client .
 docker save todoapp-client | gzip | ssh -i ~/.ssh/deploy_key $USERNAME@$HOST 'gunzip | docker load'
 
 # SSHで接続して、Dockerコンテナを実行する
-ssh -T -o StrictHostKeyChecking=no -i ~/.ssh/deploy_key $USERNAME@$HOST << EOF
-  docker rm -f todoapp-client || true
-  docker run -d --name=todoapp-client -p $PORT:80 todoapp-client
-EOF
+ssh-keyscan $HOST >> ~/.ssh/known_hosts
+ssh -T -i ~/.ssh/deploy_key $USERNAME@$HOST 'docker rm -f todoapp-client || true && docker run -d --name=todoapp-client -p $port:80 todoapp-client'
