@@ -5,7 +5,7 @@ set -e
 # Conoha VPSへSSH接続するキーを作成
 mkdir -p ~/.ssh
 ssh-keyscan -p ${PORT} ${HOST} >> ~/.ssh/known_hosts
-cat "${PRIVATE_KEY}" > ~/.ssh/deploy_key
+cat "${KEY}" > ~/.ssh/deploy_key
 chmod 600 ~/.ssh/deploy_key
 
 # 公開鍵をリモートサーバーのauthorized_keysに追加
