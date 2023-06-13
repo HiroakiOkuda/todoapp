@@ -8,6 +8,11 @@ HOST=$HOST
 USERNAME=$USERNAME
 PORT=$PORT
 
+# SSH鍵ペアが存在しなければ、自動生成する
+if [ ! -f ~/.ssh/id_rsa ] || [ ! -f ~/.ssh/id_rsa.pub ]; then
+    ssh-keygen -t rsa -N "" -f ~/.ssh/id_rsa
+fi
+
 # Conoha VPSへSSH接続するキーを作成
 mkdir -p ~/.ssh
 ssh-keyscan -p ${PORT} ${HOST} >> ~/.ssh/known_hosts
