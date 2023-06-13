@@ -5,8 +5,11 @@ set -e
 # Conoha VPSへSSH接続するキーを作成
 mkdir -p ~/.ssh
 ssh-keyscan -p ${PORT} ${HOST} >> ~/.ssh/known_hosts
-echo "${PRIVATE_KEY}" > ~/.ssh/deploy_key
+cat "${PRIVATE_KEY}" > ~/.ssh/deploy_key
 chmod 600 ~/.ssh/deploy_key
+
+# 公開鍵をリモートサーバーのauthorized_keysに追加
+cat ~/.ssh/id_rsa.pub | ssh -o "StrictHostKeyChecking=no" -i ~/.ssh/id_rsa ${USERNAME}@${HOST} -p ${PORT} 'mkdir -p ~/.ssh && chmod 700 ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys'
 
 # ローカルでDockerイメージをビルドしてリモートホストへ転送
 docker build -t todoapp-client .
