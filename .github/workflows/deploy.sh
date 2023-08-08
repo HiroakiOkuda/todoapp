@@ -26,5 +26,23 @@ ssh -o "StrictHostKeyChecking=no" -i ~/.ssh/deploy_key ${USERNAME}@${HOST} -p ${
 docker build -t todoapp-client .
 docker save todoapp-client | gzip | ssh -i ~/.ssh/deploy_key ${USERNAME}@${HOST} -p ${PORT} 'gunzip | docker load'
 
-# SSHで接続して、Dockerコンテナを実行する
-ssh -i ~/.ssh/deploy_key ${USERNAME}@${HOST} -p ${PORT} "docker rm -f todoapp-client || true && docker run -d --name=todoapp-client -p 3000:3000 todoapp-client"
+# SSHで接続
+ssh -i ~/.ssh/deploy_key ${USERNAME}@${HOST} -p ${PORT} << EOF
+
+# Dockerコンテナの削除
+docker rm -f todoapp-client > /dev/null 2>&1
+
+# エラーがあれば出力
+if [ \$? -ne 0 ]; then
+    echo "Failed to remove Docker container."
+    exit 1
+fi
+
+# Dockerコンテナの実行
+docker run -d --name=todoapp-client -p 3000:3000 todoapp-client > /dev/null 2>&1
+
+# エラーがあれば出力
+if [ \$? -ne 0 ]; then
+    echo "Failed to run Docker container."
+    exit 1
+fi
