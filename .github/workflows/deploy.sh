@@ -27,7 +27,7 @@ docker build -t todoapp-client .
 docker save todoapp-client | gzip | ssh -i ~/.ssh/deploy_key ${USERNAME}@${HOST} -p ${PORT} 'gunzip | docker load'
 
 # SSHで接続
-ssh -i ~/.ssh/deploy_key ${USERNAME}@${HOST} -p ${PORT} << EOF
+ssh -it ~/.ssh/deploy_key ${USERNAME}@${HOST} -p ${PORT} << EOF
 
 # Dockerコンテナの削除
 docker rm -f todoapp-client > /dev/null 2>&1
