@@ -30,7 +30,7 @@ docker save todoapp-client | gzip | ssh -i ~/.ssh/deploy_key ${USERNAME}@${HOST}
 ssh -i ~/.ssh/deploy_key ${USERNAME}@${HOST} -p ${PORT} << EOF
 
 # Dockerコンテナの削除
-docker rm -f todoapp-client > /dev/null 2>&1
+podman rm -f todoapp-client > /dev/null 2>&1
 
 # エラーがあれば出力
 if [ \$? -ne 0 ]; then
@@ -39,7 +39,7 @@ if [ \$? -ne 0 ]; then
 fi
 
 # Dockerコンテナの実行
-docker run -d --name=todoapp-client -p 3000:3000 todoapp-client > /dev/null 2>&1
+podman run -d --name=todoapp-client -p 3000:3000 todoapp-client > /dev/null 2>&1
 
 # エラーがあれば出力
 if [ \$? -ne 0 ]; then
