@@ -45,4 +45,4 @@ jobs:
           HOST: ${{secrets.SSH_HOST}}
           USERNAME: ${{secrets.SSH_USERNAME}}
           PORT: ${{secrets.SSH_PORT}}
-        run: sh .github/workflows/deploy.sh
+        run: sh .github/workflows/new_deploy.sh
