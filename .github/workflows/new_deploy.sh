@@ -11,8 +11,8 @@ echo "${KEY}" > ~/.ssh/deploy_key
 chmod 600 ~/.ssh/deploy_key
 
 # ローカルでDockerイメージをビルドしてリモートホストへ転送
-docker build -t todoapp-client .
-docker save todoapp-client | gzip | ssh -i ~/.ssh/deploy_key ${USERNAME}@${HOST} -p ${PORT} 'gunzip | docker load'
+podman build -t todoapp-client .
+podman save todoapp-client | gzip | ssh -i ~/.ssh/deploy_key ${USERNAME}@${HOST} -p ${PORT} 'gunzip | docker load'
 
 # SSHで接続し、Dockerコンテナの管理
 ssh -i ~/.ssh/deploy_key ${USERNAME}@${HOST} -p ${PORT} << 'EOF'
