@@ -12,10 +12,11 @@ chmod 600 ~/.ssh/deploy_key
 
 # ローカルでDockerイメージをビルドしてリモートホストへ転送
 podman build -t todoapp-client .
-podman save todoapp-client | gzip | ssh -i ~/.ssh/deploy_key ${USERNAME}@${HOST} -p ${PORT} 'gunzip | docker load'
+podman save todoapp-client | gzip | ssh -i ~/.ssh/deploy_key ${USERNAME}@${HOST} -p ${PORT} 'gunzip | podman load'
 
 # SSHで接続し、Dockerコンテナの管理
 ssh -i ~/.ssh/deploy_key ${USERNAME}@${HOST} -p ${PORT} << 'EOF'
+
 # Dockerコンテナの削除と実行
 podman rm -f todoapp-client > /dev/null 2>&1 || echo "Container removal failed"
 podman run -d --name=todoapp-client -p 3000:3000 todoapp-client > /dev/null 2>&1 || echo "Failed to run Docker container"
