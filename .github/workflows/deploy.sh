@@ -27,7 +27,7 @@ fi
 EOF
 
 # エラーがあれば出力
-if [ \$? -eq 0 ]; then
+if [ $? -eq 0 ]; then
     echo "Deployment succeeded"
 else 
     echo "Deployment failed"
