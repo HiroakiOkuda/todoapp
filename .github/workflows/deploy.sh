@@ -1,48 +1,35 @@
-bash
-#!/bin/bash
-set -e
-
 # GitHub Secretsから必要なシークレットキー情報を取得
-KEY=$KEY
-HOST=$HOST
-USERNAME=$USERNAME
-PORT=$PORT
+KEY="$KEY"
+HOST="$HOST"
+USERNAME="$USERNAME"
+PORT="$PORT"
 
-# SSH鍵ペアが存在しなければ、自動生成する
-if [ ! -f ~/.ssh/id_rsa ] || [ ! -f ~/.ssh/id_rsa.pub ]; then
-    ssh-keygen -t rsa -N "" -f ~/.ssh/id_rsa
-fi
-
-# Conoha VPSへSSH接続するキーを作成
+# Conoha VPSへSSH接続するキーを設定
 mkdir -p ~/.ssh
-ssh-keyscan -p ${PORT} ${HOST} >> ~/.ssh/known_hosts
-echo "${KEY}" >> ~/.ssh/deploy_key
+ssh-keyscan -p "${PORT}" "${HOST}" >> ~/.ssh/known_hosts
+echo "${KEY}" > ~/.ssh/deploy_key
 chmod 600 ~/.ssh/deploy_key
 
-# 公開鍵をリモートサーバーのauthorized_keysに追加
-ssh -o "StrictHostKeyChecking=no" -i ~/.ssh/deploy_key ${USERNAME}@${HOST} -p ${PORT} "mkdir -p ~/.ssh && chmod 700 ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys" < ~/.ssh/id_rsa.pub
+# ローカルでPodmanイメージをビルドしてリモートホストへ転送
+podman build -t todoapp-client .
+podman save todoapp-client | gzip | ssh -i ~/.ssh/deploy_key "${USERNAME}@${HOST}" -p "${PORT}" 'gunzip | podman load'
 
-# ローカルでDockerイメージをビルドしてリモートホストへ転送
-docker build -t todoapp-client .
-docker save todoapp-client | gzip | ssh -i ~/.ssh/deploy_key ${USERNAME}@${HOST} -p ${PORT} 'gunzip | docker load'
+# SSHで接続し、Podmanコンテナの管理
+ssh -i ~/.ssh/deploy_key "${USERNAME}@${HOST}" -p "${PORT}" << 'EOF'
 
-# SSHで接続
-ssh -i ~/.ssh/deploy_key ${USERNAME}@${HOST} -p ${PORT} << EOF
-
-# Dockerコンテナの削除
-podman rm -f todoapp-client > /dev/null 2>&1
-
-# エラーがあれば出力
-if [ \$? -ne 0 ]; then
-    echo "Failed to remove Docker container."
+# Podmanコンテナの削除と実行
+podman rm -f todoapp-client || true
+if ! podman run -d --name=todoapp-client -p 3000:3000 todoapp-client; then
+    echo "Failed to run Podman container."
     exit 1
 fi
 
-# Dockerコンテナの実行
-podman run -d --name=todoapp-client -p 3000:3000 todoapp-client > /dev/null 2>&1
+EOF
 
 # エラーがあれば出力
-if [ \$? -ne 0 ]; then
-    echo "Failed to run Docker container."
+if [ \$? -eq 0 ]; then
+    echo "Deployment succeeded"
+else 
+    echo "Deployment failed"
     exit 1
 fi
