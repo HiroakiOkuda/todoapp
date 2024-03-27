@@ -1,12 +1,7 @@
-query todos {
-  todos {
-    createdAt
-    deletedAt
+query todos($id: Int!) {
+  getTodos(id: $id) {
     description
-    due
     status
     title
-    todoId
-    updatedAt
   }
 }

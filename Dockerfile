@@ -2,5 +2,11 @@ FROM node:18.13.0
 WORKDIR /usr/src/app
 COPY ["package.json", "package-lock.json", "./"]
 RUN npm install
+ENV NODE_ENV development
+ENV TODOAPP_ENV development
+ENV URL http://localhost:3000
+ENV CLIENT_SIDE_GRAPHQL_ENDPOINT http://localhost:3300/graphql
+ENV SERVER_SIDE_GRAPHQL_ENDPOINT http://user-server:3300/graphql
+
 COPY . .
-ENTRYPOINT ["npm", "run", "dev"]
+ENTRYPOINT ["yarn", "dev"]
