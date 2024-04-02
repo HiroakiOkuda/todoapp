@@ -6,7 +6,7 @@ FROM node:18.13.0 as builder
 WORKDIR /usr/src/app
 COPY ["package.json", "package-lock.json", "./"]
 RUN mkdir -p /root/.cache
-RUN yarn install --non-interactive --frozen-lockfile
+RUN npm install --non-interactive --frozen-lockfile
 COPY . .
 ARG metis_env
 ENV NODE_ENV="production"
@@ -21,7 +21,7 @@ FROM node:18.13.0 as node_modules
 WORKDIR /usr/src/app
 COPY ["package.json", "package-lock.json", "./"]
 RUN mkdir -p /root/.cache
-RUN yarn install --non-interactive --frozen-lockfile --prod
+RUN npm install --non-interactive --frozen-lockfile --prod
 
 # run
 FROM node:18.13.0
