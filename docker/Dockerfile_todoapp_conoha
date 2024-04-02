@@ -4,7 +4,7 @@ ARG server_url="http://160.251.204.153"
 # build
 FROM node:18.13.0 as builder
 WORKDIR /usr/src/app
-COPY ["package.json", "yarn.lock", "./"]
+COPY ["package.json", "package-lock.json", "./"]
 RUN mkdir -p /root/.cache
 RUN yarn install --non-interactive --frozen-lockfile
 COPY . .
@@ -19,7 +19,7 @@ RUN yarn build
 # install packages
 FROM node:18.13.0 as node_modules
 WORKDIR /usr/src/app
-COPY ["package.json", "yarn.lock", "./"]
+COPY ["package.json", "package-lock.json", "./"]
 RUN mkdir -p /root/.cache
 RUN yarn install --non-interactive --frozen-lockfile --prod
 
