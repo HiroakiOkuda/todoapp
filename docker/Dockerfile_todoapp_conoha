@@ -14,7 +14,7 @@ ENV METIS_ENV=${metis_env}
 ENV URL=${client_url}
 ENV CLIENT_SIDE_GRAPHQL="${server_url}/graphql"
 ENV SERVER_SIDE_GRAPHQL="${server_url}/graphql"
-RUN yarn build
+RUN npm run build
 
 # install packages
 FROM node:18.13.0 as node_modules
