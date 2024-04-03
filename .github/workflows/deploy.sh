@@ -10,17 +10,17 @@ ssh-keyscan -p "${PORT}" "${HOST}" >> ~/.ssh/known_hosts
 echo "${KEY}" > ~/.ssh/deploy_key
 chmod 600 ~/.ssh/deploy_key
 
-# ローカルでPodmanイメージをビルドしてリモートホストへ転送
-podman build -t todoapp-client .
-podman save todoapp-client | gzip | ssh -i ~/.ssh/deploy_key "${USERNAME}@${HOST}" -p "${PORT}" 'gunzip | podman load'
+# ローカルでdockerイメージをビルドしてリモートホストへ転送
+docker build -t todoapp-client -f ./docker/Dockerfile_todoapp_conoha .
+docker save todoapp-client | gzip | ssh -i ~/.ssh/deploy_key "${USERNAME}@${HOST}" -p "${PORT}" 'gunzip | docker load'
 
-# SSHで接続し、Podmanコンテナの管理
+# SSHで接続し、dockerコンテナの管理
 ssh -i ~/.ssh/deploy_key "${USERNAME}@${HOST}" -p "${PORT}" << EOF
 
-# Podmanコンテナの削除と実行
-    podman stop todoapp-client || true  # 既に実行中のコンテナがあれば停止
-    podman rm todoapp-client || true  # 停止したコンテナを削除
-    podman run -d --name todoapp-client -p 3000:3000 todoapp-client  # 新しいコンテナを起動
+# dockerコンテナの削除と実行
+    docker stop todoapp-client || true  # 既に実行中のコンテナがあれば停止
+    docker rm todoapp-client || true  # 停止したコンテナを削除
+    docker run -d --name todoapp-client -p 3000:3000 todoapp-client  # 新しいコンテナを起動
 EOF
 
 # エラーがあれば出力
