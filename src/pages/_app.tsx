@@ -5,6 +5,7 @@ import { store } from "@/store";
 import { MeProvider } from "@/context/me-context";
 import { FunctionComponent } from "react";
 import { NextPage } from "next";
+import { AppCacheProvider } from "@mui/material-nextjs/v14-pagesRouter";
 
 export type NextPageWithLayout<T, U> = NextPage<T> & {
   getLayout?: (children: React.ReactElement, props: U) => React.ReactElement;
@@ -29,7 +30,9 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
     <Provider store={store}>
       <ApolloProvider client={client}>
         <MeProvider>
-          {getLayout(<Component {...pageProps} />, pageProps)}
+          <AppCacheProvider>
+            {getLayout(<Component {...pageProps} />, pageProps)}
+          </AppCacheProvider>
         </MeProvider>
       </ApolloProvider>
     </Provider>
