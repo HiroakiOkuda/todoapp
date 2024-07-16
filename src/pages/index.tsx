@@ -1,8 +1,11 @@
-import Head from 'next/head'
-import { Inter } from '@next/font/google'
-const inter = Inter({ subsets: ['latin'] })
+import Head from "next/head";
+import { getLayout, LayoutProps } from "../components/layout/layout";
+import { NextPageWithLayout } from "./_app";
 
-export default function Home() {
+type IndexPageProps = {
+  title: string;
+};
+const Home: NextPageWithLayout<IndexPageProps, LayoutProps> = () => {
   return (
     <>
       <Head>
@@ -15,5 +18,9 @@ export default function Home() {
         <p>Top Page</p>
       </main>
     </>
-  )
-}
+  );
+};
+
+Home.getLayout = getLayout;
+
+export default Home;
