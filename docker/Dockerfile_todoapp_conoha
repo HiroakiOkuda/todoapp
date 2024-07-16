@@ -2,7 +2,7 @@ ARG metis_env="production"
 ARG client_url="http://160.251.137.133"
 ARG server_url="http://160.251.204.153"
 # build
-FROM node:18.13.0 as builder
+FROM node:18.22.0 as builder
 WORKDIR /usr/src/app
 COPY ["package.json", "package-lock.json", "./"]
 RUN mkdir -p /root/.cache
@@ -17,14 +17,14 @@ ENV SERVER_SIDE_GRAPHQL="${server_url}/graphql"
 RUN npm run build
 
 # install packages
-FROM node:18.13.0 as node_modules
+FROM node:18.22.0 as node_modules
 WORKDIR /usr/src/app
 COPY ["package.json", "package-lock.json", "./"]
 RUN mkdir -p /root/.cache
 RUN npm install --non-interactive --frozen-lockfile --prod
 
 # run
-FROM node:18.13.0
+FROM node:18.22.0
 WORKDIR /usr/src/app
 ENV NODE_ENV="production"
 ENV METIS_ENV=${metis_env}
