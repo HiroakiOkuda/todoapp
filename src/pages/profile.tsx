@@ -1,9 +1,9 @@
-import { getLayout } from "../components/layout/layout";
+import { getLayout, LayoutProps } from "../components/layout";
+import { NextPageWithLayout } from "./_app";
 
-const ProfilePage = () => {
-  return (
-    <div>Profile Page</div>
-  )
-}
+type ProfilePageProps = {};
+const ProfilePage: NextPageWithLayout<ProfilePageProps, LayoutProps> = () => {
+  return <div>Profile Page</div>;
+};
 ProfilePage.getLayout = getLayout;
 export default ProfilePage;

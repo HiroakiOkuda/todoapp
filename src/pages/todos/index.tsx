@@ -1,11 +1,14 @@
-import TodoItem from "@/components/todo/TodoItem";
+import { LayoutProps } from "@/components/layout";
+import TodoItem from "@/components/parts/todo/TodoItem";
 import { RootState } from "@/store";
 import { useAppSelector } from "@/store/hooks";
 import { CssBaseline, Grid } from "@mui/material";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { NextPageWithLayout } from "../_app";
 
-const TodosPage = () => {
+type TodosPageProps = {};
+const TodosPage: NextPageWithLayout<TodosPageProps, LayoutProps> = () => {
   const theme = createTheme();
   const todos = useAppSelector((state: RootState) => state.todos);
 

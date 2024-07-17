@@ -5,7 +5,7 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { Todo } from "../../store/todos/todo.type";
+import { Todo } from "../../../store/todos/todo.type";
 
 const TodoItem: FunctionComponent<Todo> = ({
   id,

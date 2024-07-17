@@ -1,7 +1,9 @@
-import { getLayout } from "../../components/layout/layout";
+import { getLayout, LayoutProps } from "../../components/layout";
+import { NextPageWithLayout } from "../_app";
 
-const AddTodoPage = () => {
-  return <div>Add Todo Page</div>
-}
+type AddTodoPageProps = {};
+const AddTodoPage: NextPageWithLayout<AddTodoPageProps, LayoutProps> = () => {
+  return <div>Add Todo Page</div>;
+};
 AddTodoPage.getLayout = getLayout;
 export default AddTodoPage;
