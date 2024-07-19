@@ -13,6 +13,7 @@ const nextConfig = {
       process.env.CLIENT_SIDE_GRAPHQL_ENDPOINT ?? 'http://localhost:3300/graphql',
     TODOAPP_ENV: process.env.TODOAPP_ENV ?? 'development',
   },
+  poweredByHeader: false,
 }
 
 module.exports = nextConfig

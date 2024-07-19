@@ -1,7 +1,6 @@
 import Head from "next/head";
 import { getLayout, LayoutProps } from "../components/layout";
 import { NextPageWithLayout } from "./_app";
-import Index from "../components/templates";
 
 type IndexPageProps = {
   title: string;
@@ -15,7 +14,7 @@ const Home: NextPageWithLayout<IndexPageProps, LayoutProps> = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Index />
+      <p>Top Page</p>
     </>
   );
 };
