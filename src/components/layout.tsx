@@ -23,7 +23,6 @@ type TopLayoutProps = {
   children: ReactNode;
 };
 const TopLayout: FunctionComponent<TopLayoutProps> = ({ children }) => {
-  console.log(children);
   return (
     <Fragment>
       {children && Array.isArray(children) ? (
