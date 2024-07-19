@@ -1,4 +1,4 @@
-ARG metis_env="production"
+ARG todoapp_env="production"
 ARG client_url="http://160.251.137.133"
 ARG server_url="http://160.251.204.153"
 # build
@@ -8,9 +8,9 @@ COPY ["package.json", "package-lock.json", "./"]
 RUN mkdir -p /root/.cache
 RUN npm install --non-interactive --frozen-lockfile
 COPY . .
-ARG metis_env
+ARG todoapp_env
 ENV NODE_ENV="production"
-ENV METIS_ENV=${metis_env}
+ENV TODOAPP_ENV=${todoapp_env}
 ENV URL=${client_url}
 ENV CLIENT_SIDE_GRAPHQL="${server_url}/graphql"
 ENV SERVER_SIDE_GRAPHQL="${server_url}/graphql"
@@ -27,7 +27,7 @@ RUN npm install --non-interactive --frozen-lockfile --prod
 FROM node:22-bullseye-slim
 WORKDIR /usr/src/app
 ENV NODE_ENV="production"
-ENV METIS_ENV=${metis_env}
+ENV TODOAPP_ENV=${todoapp_env}
 ENV URL=${client_url}
 COPY --from=builder /usr/src/app/public /usr/src/app/public
 COPY --from=builder /usr/src/app/.next /usr/src/app/.next
